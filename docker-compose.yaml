@@ -9,6 +9,9 @@ services:
       - cache:/data
   tgclient:
     image: tgclient
+    build:
+      context: .
+      dockerfile: tgclient.Dockerfile
     restart: always
     ports:
       - '8001:8001'
@@ -20,6 +23,9 @@ services:
       - queue
   tdserver:
     image: tdserver
+    build: 
+      context: .
+      dockerfile: tdserver.Dockerfile
     restart: always
     ports:
       - '5000:5000'
