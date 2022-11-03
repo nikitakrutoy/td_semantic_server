@@ -104,9 +104,7 @@ PASSWORD_FORM = '''
 SESSION = os.environ.get('TG_SESSION', 'quart')
 API_ID =  int(os.environ.get('TG_APP_ID'))
 API_HASH = os.environ.get('TG_APP_HASH')
-logging.info(API_ID)
-logging.info(API_HASH)
-logging.info("credentials")
+DEBUG = bool(os.environ.get('DEBUG', False))
 
 # Telethon client
 client = TelegramClient(SESSION, API_ID, API_HASH)
@@ -200,12 +198,15 @@ async def handler(event):
         message = event.message.message[:MAX_MESSAGE_LEN]
         probs = predict([message])
         result = dict(
-            first_name=first_name,
-            second_name=second_name,
-            message=event.message.message,
             probs=probs,
             time=time.time()
         )
+        if DEBUG:
+            result.update(dict(
+                first_name=first_name,
+                second_name=second_name,
+                message=event.message.message
+            ))
         r.publish("predictions", json.dumps(result))
         logging.info(f"{first_name} {second_name}: {event.message.message}")
         logging.info(f"Semantic: {probs}")
