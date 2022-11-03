@@ -8,31 +8,31 @@ model_names = [
     "sbert-ru-sentiment-rusentiment",
 ]
 
-# models = []
-# tokenizers = []
+models = []
+tokenizers = []
 
-# output_permutations = [
-#     [0, 1, 2]
-# ]
+output_permutations = [
+    [0, 1, 2]
+]
 
-# torch.set_printoptions(precision=3, sci_mode=False, linewidth=70)
+torch.set_printoptions(precision=3, sci_mode=False, linewidth=70)
 
-# for repo in model_repos:
-#     tokenizers.append(AutoTokenizer.from_pretrained(repo))
-#     models.append(AutoModelForSequenceClassification.from_pretrained(repo))
+for repo in model_repos:
+    tokenizers.append(AutoTokenizer.from_pretrained(repo))
+    models.append(AutoModelForSequenceClassification.from_pretrained(repo))
 
-# i = 0
-# model = models[i]
-# tokenizer = tokenizers[i]
-# perm = output_permutations[i]
+i = 0
+model = models[i]
+tokenizer = tokenizers[i]
+perm = output_permutations[i]
 
 import random
 
 def predict(phrases):
-    return [random.random() for i in range(3)]
-    # inputs = tokenizer(phrases, return_tensors="pt", padding=True)
-    # outputs = torch.nn.functional.softmax(model(**inputs).logits.detach(), dim=1)
-    # return torch.nn.functional.normalize(outputs[:, :3][:, perm])
+    # return [random.random() for i in range(3)]
+    inputs = tokenizer(phrases, return_tensors="pt", padding=True)
+    outputs = torch.nn.functional.softmax(model(**inputs).logits.detach(), dim=1)
+    return torch.nn.functional.normalize(outputs[:, :3][:, perm])
 
 
 from telethon.sync import TelegramClient, events
