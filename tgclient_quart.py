@@ -189,7 +189,7 @@ async def main():
     config.bind = "0.0.0.0:8001"
     await hypercorn.asyncio.serve(app, config)
 
-@client.on(events.NewMessage(incoming=True, outgoing=False))
+@client.on(events.NewMessage(incoming=True, outgoing=True))
 async def handler(event):
     if event.is_private and event.message.message:
         sender = await event.get_sender()
